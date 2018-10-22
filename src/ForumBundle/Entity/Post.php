@@ -1,12 +1,12 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace ForumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="post")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
+ * @ORM\Entity(repositoryClass="ForumBundle\Repository\PostRepository")
  */
 class Post
 {
