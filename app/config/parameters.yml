@@ -1,12 +1,13 @@
 # This file is auto-generated during the composer install
 parameters:
-  database_host: 127.0.0.1
-  database_port: null
-  database_name: forum
-  database_user: root
-  database_password: root
-  mailer_transport: smtp
-  mailer_host: 127.0.0.1
-  mailer_user: null
-  mailer_password: null
-  secret: ThisTokenIsNotSoSecretChangeIt
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: forum
+    database_user: root
+    database_password: root
+    mailer_transport: smtp
+    mailer_host: smtp.mailtrap.io
+    mailer_user: 99e4c425ef3d77
+    mailer_password: 153ae57d888b80
+    mailer_port: 25
+    secret: ThisTokenIsNotSoSecretChangeIt
