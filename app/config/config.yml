@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ['%locale%'] }
+    translator: { fallbacks: [en] }
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -68,6 +68,7 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     port: '%mailer_port%'
+    auth_mode: '%mailer_auth_mode%'
     spool: { type: memory }
 
 sensio_framework_extra:
