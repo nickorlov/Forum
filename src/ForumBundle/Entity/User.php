@@ -4,6 +4,7 @@ namespace ForumBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -20,16 +21,19 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(name="name", type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
-     * @ORM\Column(name="short_bio", type="string", length=500)
+     * @ORM\Column(name="short_bio", type="string", length=500, nullable=true)
      */
     private $shortBio;
 
     /**
      * @ORM\Column(name="birthday", type="date", nullable=true)
+     * @Assert\NotBlank()
+     * @Assert\Type("Birthday")
      */
     private $birthday;
 
