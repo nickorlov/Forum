@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserFormType extends AbstractType
+class PostFormType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -18,29 +18,21 @@ class UserFormType extends AbstractType
     {
         $builder
             ->add(
-                'name',
+                'title',
                 TextType::class,
                 ['attr' => ['class' => 'form-control']]
             )
             ->add(
-                'shortBio',
+                'body',
                 TextareaType::class,
                 ['attr' => ['class' => 'form-control']]
-            )
-            ->add(
-                'facebook',
-                TextType::class,
-                [
-                    'attr' => ['class' => 'form-control'],
-                    'required' => false
-                ]
             )
             ->add(
                 'submit',
                 SubmitType::class,
                 [
                     'attr' => ['class' => 'form-control btn-primary pull-right'],
-                    'label' => 'Become an author!'
+                    'label' => 'Submit'
                 ]
             );
     }
@@ -51,7 +43,7 @@ class UserFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'ForumBundle\Entity\User'
+            'data_class' => 'ForumBundle\Entity\Post'
         ]);
     }
 
@@ -60,6 +52,6 @@ class UserFormType extends AbstractType
      */
     public function getName()
     {
-        return 'author_form';
+        return 'post_form';
     }
 }
