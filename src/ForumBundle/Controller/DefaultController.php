@@ -2,6 +2,7 @@
 
 namespace ForumBundle\Controller;
 
+//use ForumBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,6 +27,13 @@ class DefaultController extends Controller
             false, /* true: load all children, false: only direct */
             $options
         );
+
+//        $em = $this->get('doctrine.orm.default_entity_manager');
+//        /** @var Post $post */
+//        $post = $em->getRepository('ForumBundle:Post')->findOneBy(['title' => 'Your first blog post example!']);
+//        $post->setTitle('Hello world!');
+//        $em->persist($post);
+//        $em->flush();
 
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,

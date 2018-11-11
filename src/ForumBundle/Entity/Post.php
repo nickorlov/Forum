@@ -4,11 +4,11 @@ namespace ForumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="post")
  * @ORM\Entity(repositoryClass="ForumBundle\Repository\PostRepository")
- * @ORM\HasLifecycleCallbacks()
  */
 class Post
 {
@@ -20,6 +20,14 @@ class Post
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var Category
+     *
+     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
 
     /**
      * @var string
@@ -36,13 +44,6 @@ class Post
     private $body;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
-     */
-    private $slug;
-
-    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
@@ -53,16 +54,26 @@ class Post
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created", type="datetime")
      */
-    private $createdAt;
+    private $created;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated", type="datetime")
      */
-    private $updatedAt;
+    private $updated;
+
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="change", field={"title", "body"})
+     * @ORM\Column(name="content_changed", type="datetime", nullable=true)
+     */
+    private $contentChanged;
 
 
     /**
@@ -100,33 +111,9 @@ class Post
     }
 
     /**
-     * Set slug
-     *
-     * @param string $slug
-     *
-     * @return Post
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
      * Set author
      *
-     * @param string $author
+     * @param User $author
      *
      * @return Post
      */
@@ -140,7 +127,7 @@ class Post
     /**
      * Get author
      *
-     * @return string
+     * @return User
      */
     public function getAuthor()
     {
@@ -148,51 +135,51 @@ class Post
     }
 
     /**
-     * Set createdAt
+     * Set created
      *
-     * @param \DateTime $createdAt
+     * @param \DateTime $created
      *
      * @return Post
      */
-    public function setCreatedAt($createdAt)
+    public function setCreated($created)
     {
-        $this->createdAt = $createdAt;
+        $this->created = $created;
 
         return $this;
     }
 
     /**
-     * Get createdAt
+     * Get created
      *
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreated()
     {
-        return $this->createdAt;
+        return $this->created;
     }
 
     /**
-     * Set updatedAt
+     * Set updated
      *
-     * @param \DateTime $updatedAt
+     * @param \DateTime $updated
      *
      * @return Post
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdated($updated)
     {
-        $this->updatedAt = $updatedAt;
+        $this->updated = $updated;
 
         return $this;
     }
 
     /**
-     * Get updatedAt
+     * Get updated
      *
      * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdated()
     {
-        return $this->updatedAt;
+        return $this->updated;
     }
 
     /**
@@ -205,7 +192,7 @@ class Post
 
     /**
      * @param string $body
-     * @return $this
+     * @return Post
      */
     public function setBody($body)
     {
@@ -215,16 +202,40 @@ class Post
     }
 
     /**
-     * @ORM\PrePersist
+     * @return Category
      */
-    public function prePersist()
+    public function getCategory(): Category
     {
-        if (!$this->getCreatedAt()) {
-            $this->setCreatedAt(new \DateTime());
-        }
+        return $this->category;
+    }
 
-        if (!$this->getUpdatedAt()) {
-            $this->setUpdatedAt(new \DateTime());
-        }
+    /**
+     * @param Category $category
+     * @return Post
+     */
+    public function setCategory(Category $category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getContentChanged(): \DateTime
+    {
+        return $this->contentChanged;
+    }
+
+    /**
+     * @param \DateTime $contentChanged
+     * @return Post
+     */
+    public function setContentChanged(\DateTime $contentChanged)
+    {
+        $this->contentChanged = $contentChanged;
+
+        return $this;
     }
 }

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use ForumBundle\Entity\Post;
 use ForumBundle\Form\PostFormType;
 use ForumBundle\Repository\PostRepository;
+use ForumBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +19,14 @@ class PostController extends Controller
     /** @var PostRepository */
     private $postRepository;
 
+    /** @var UserRepository */
+    private $userRepository;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->postRepository = $entityManager->getRepository('ForumBundle:Post');
+        $this->userRepository = $entityManager->getRepository('ForumBundle:User');
     }
 
     /**
@@ -30,10 +35,7 @@ class PostController extends Controller
     public function createPostAction(Request $request)
     {
         $post = new Post();
-        $post->setTitle('Hello world');
-        $post->setAuthor($this->getUser());
-        $post->setSlug('hello_world');
-
+        $post->setAuthor($this->userRepository->find(11));
 
         $form = $this->createForm(PostFormType::class, $post);
         $form->handleRequest($request);
@@ -42,8 +44,7 @@ class PostController extends Controller
             $this->entityManager->persist($post);
             $this->entityManager->flush();
 
-            $request->getSession()->set('user_is_author', true);
-            $this->addFlash('success', 'Congratulations! You are now an author.');
+            $this->addFlash('success', 'Congratulations! The post was created!');
 
             return $this->redirectToRoute('homepage');
         }
