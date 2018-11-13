@@ -3,6 +3,8 @@
 namespace ForumBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use ForumBundle\Entity\Post;
 use ForumBundle\Form\PostFormType;
 use ForumBundle\Repository\PostRepository;
@@ -10,6 +12,7 @@ use ForumBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
@@ -35,7 +38,14 @@ class PostController extends Controller
     public function createPostAction(Request $request)
     {
         $post = new Post();
-        $post->setAuthor($this->userRepository->find(11));
+
+        try {
+            $post->setAuthor($this->userRepository->findOneByUserName('auth0-username'));
+        } catch (NoResultException $e) {
+            return new Response('Not found!');
+        } catch (NonUniqueResultException $e) {
+            return new Response('NonUniqueResultException!');
+        }
 
         $form = $this->createForm(PostFormType::class, $post);
         $form->handleRequest($request);
@@ -51,6 +61,17 @@ class PostController extends Controller
 
         return $this->render('post/add-post.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/", name="homepage")
+     * @Route("/posts", name="posts")
+     */
+    public function listAction()
+    {
+        return $this->render('post/posts.html.twig', [
+            'posts' => $this->postRepository->findAll(),
         ]);
     }
 }
