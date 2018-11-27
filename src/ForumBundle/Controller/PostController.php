@@ -38,14 +38,7 @@ class PostController extends Controller
     public function createPostAction(Request $request)
     {
         $post = new Post();
-
-        try {
-            $post->setAuthor($this->userRepository->findOneByUserName('auth0-username'));
-        } catch (NoResultException $e) {
-            return new Response('Not found!');
-        } catch (NonUniqueResultException $e) {
-            return new Response('NonUniqueResultException!');
-        }
+        $post->setAuthor($this->getUser());
 
         $form = $this->createForm(PostFormType::class, $post);
         $form->handleRequest($request);
