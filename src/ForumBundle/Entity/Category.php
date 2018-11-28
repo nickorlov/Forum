@@ -92,4 +92,9 @@ class Category
     {
         return $this->parent;
     }
+
+    public function getLevel()
+    {
+        return $this->lvl;
+    }
 }

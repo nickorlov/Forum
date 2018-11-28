@@ -202,9 +202,9 @@ class Post
     }
 
     /**
-     * @return Category
+     * @return Category|null
      */
-    public function getCategory(): Category
+    public function getCategory()
     {
         return $this->category;
     }

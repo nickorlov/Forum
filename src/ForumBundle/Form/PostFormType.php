@@ -2,6 +2,8 @@
 
 namespace ForumBundle\Form;
 
+use ForumBundle\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,6 +28,17 @@ class PostFormType extends AbstractType
                 'body',
                 TextareaType::class,
                 ['attr' => ['class' => 'form-control']]
+            )
+            ->add(
+                'category',
+                EntityType::class,
+                [
+                    'class' => 'ForumBundle\Entity\Category',
+                    'choice_label' => function ($category) {
+                        /** @var Category $category */
+                        return str_repeat('— ', $category->getLevel()) . $category->getTitle();
+                    }
+                ]
             )
             ->add(
                 'submit',
