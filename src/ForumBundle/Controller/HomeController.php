@@ -7,10 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends Controller
+class HomeController extends Controller
 {
     /**
-     * @Route("/aaa", name="homepage")
+     * @Route("/", name="homepage")
      */
     public function indexAction(Request $request)
     {

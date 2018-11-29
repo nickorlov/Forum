@@ -23,6 +23,8 @@ class MenuBuilder
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
 
         $menu->addChild('Home', ['route' => 'homepage']);
+        $menu->addChild('Add post', ['route' => 'add_post']);
+        $menu->addChild('Posts', ['route' => 'posts']);
         $menu->addChild('Login', ['route' => 'fos_user_security_login']);
         $menu->addChild('Register', ['route' => 'fos_user_registration_register']);
 

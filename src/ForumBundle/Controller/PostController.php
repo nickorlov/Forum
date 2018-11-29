@@ -58,7 +58,6 @@ class PostController extends Controller
     }
 
     /**
-     * @Route("/", name="homepage")
      * @Route("/posts", name="posts")
      */
     public function listAction()
