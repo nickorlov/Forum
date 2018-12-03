@@ -3,8 +3,8 @@
 namespace ForumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ForumBundle\Entity\Traits\TimestampableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="post")
@@ -12,6 +12,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Post
 {
+    use TimestampableTrait;
+
     /**
      * @var int
      *
@@ -52,29 +54,10 @@ class Post
     private $author;
 
     /**
-     * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(name="created", type="datetime")
+     * @ORM\Column(name="comments", type="array", nullable=true)
+     * @ORM\OneToMany(targetEntity="ForumBundle\Entity\Comment", mappedBy="post")
      */
-    private $created;
-
-    /**
-     * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(name="updated", type="datetime")
-     */
-    private $updated;
-
-    /**
-     * @var \DateTime
-     *
-     * @Gedmo\Timestampable(on="change", field={"title", "body"})
-     * @ORM\Column(name="content_changed", type="datetime", nullable=true)
-     */
-    private $contentChanged;
-
+    private $comments;
 
     /**
      * Get id
@@ -135,54 +118,6 @@ class Post
     }
 
     /**
-     * Set created
-     *
-     * @param \DateTime $created
-     *
-     * @return Post
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     *
-     * @return Post
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
      * @return string
      */
     public function getBody()
@@ -221,20 +156,20 @@ class Post
     }
 
     /**
-     * @return \DateTime
+     * @return array
      */
-    public function getContentChanged(): \DateTime
+    public function getComments()
     {
-        return $this->contentChanged;
+        return $this->comments;
     }
 
     /**
-     * @param \DateTime $contentChanged
+     * @param Comment $comment
      * @return Post
      */
-    public function setContentChanged(\DateTime $contentChanged)
+    public function setComment(Comment $comment)
     {
-        $this->contentChanged = $contentChanged;
+        $this->comments[] = $comment;
 
         return $this;
     }

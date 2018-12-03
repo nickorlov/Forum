@@ -32,12 +32,14 @@
     {% endblock %}
 
     <div class="container theme-showcase" role="main">
-        {% for message in app.flashes('success') %}
-            <div class="flash-notice">
-                {{ message }}
-            </div>
-        {% endfor %}
-        {% block body %}{% endblock %}
+        <div class="row">
+            {% for message in app.flashes('success') %}
+                <div class="flash-notice">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% block body %}{% endblock %}
+        </div>
     </div>
 
     {#{% block javascripts %}#}

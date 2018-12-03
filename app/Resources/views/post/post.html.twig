@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+    <div class="col-sm-12">
+        <h1>{{ post.title }}</h1>
+        <div class="row post-item">
+            <div class="col-sm-12">
+                <p class="post-date">{{ post.created|date('d.m.Y') }}</p>
+            </div>
+            <div class="col-sm-3">
+                <div>{{ post.author.username }}</div>
+                <div>{{ post.author.birthday|date('d.m.Y') }}</div>
+            </div>
+            <div class="col-sm-9">
+                {{ post.body }}
+            </div>
+        </div>
+
+        {% for comment in post.comments %}
+            <div class="row post-item">
+                <div class="col-sm-12">
+                    <p class="post-date">{{ comment.created|date('d.m.Y') }}</p>
+                </div>
+                <div class="col-sm-3">
+                    <div>{{ comment.author.username }}</div>
+                    <div>{{ comment.author.birthday|date('d.m.Y') }}</div>
+                </div>
+                <div class="col-sm-9">
+                    {{ comment.body }}
+                </div>
+            </div>
+        {% endfor %}
+
+        {{ form_start(form) }}
+        <div class="col-md-12">
+            <h3>Add new comment</h3>
+            <div class="form-group col-md-12">
+                {{ form_row(form.body) }}
+            </div>
+            <div class="form-group col-md-4 pull-right">
+                {{ form_widget(form.submit) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

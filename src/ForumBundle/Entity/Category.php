@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @Gedmo\Tree(type="nested")
  * @ORM\Table(name="categories")
- * use repository for handy tree functions
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  */
 class Category

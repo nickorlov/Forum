@@ -3,16 +3,15 @@
 namespace ForumBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
+use ForumBundle\Entity\Comment;
 use ForumBundle\Entity\Post;
+use ForumBundle\Form\CommentType;
 use ForumBundle\Form\PostFormType;
 use ForumBundle\Repository\PostRepository;
 use ForumBundle\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
@@ -64,6 +63,36 @@ class PostController extends Controller
     {
         return $this->render('post/posts.html.twig', [
             'posts' => $this->postRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/post/{id}", name="post", requirements={"id"="\d+"})
+     */
+    public function postAction($id, Request $request)
+    {
+        $post = $this->postRepository->find($id);
+        $comment = new Comment();
+        $comment->setAuthor($this->getUser());
+        $comment->setPost($post);
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post->setComment($comment);
+            $this->entityManager->persist($comment);
+            $this->entityManager->persist($post);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Congratulations! Your comment was added!');
+
+            return $this->redirectToRoute('post', ['id' => $id]);
+        }
+
+        return $this->render('post/post.html.twig', [
+            'post' => $post,
+            'form' => $form->createView()
         ]);
     }
 }
