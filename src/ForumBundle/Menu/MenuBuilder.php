@@ -24,6 +24,7 @@ class MenuBuilder
 
         $menu->addChild('Home', ['route' => 'homepage']);
         $menu->addChild('Add post', ['route' => 'add_post']);
+        $menu->addChild('Add category', ['route' => 'create_category']);
         $menu->addChild('Posts', ['route' => 'posts']);
         $menu->addChild('Login', ['route' => 'fos_user_security_login']);
         $menu->addChild('Register', ['route' => 'fos_user_registration_register']);

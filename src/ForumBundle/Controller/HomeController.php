@@ -20,20 +20,21 @@ class HomeController extends Controller
             'rootOpen' => '<ul>',
             'rootClose' => '</ul>',
             'childOpen' => '<li>',
-            'childClose' => '</li>'
+            'childClose' => '</li>',
+            'nodeDecorator' => function ($node) {
+                $decorator = '<a href="/category/' . $node['id'] . '">' . $node['title'] . '</a>';
+                if ($node['description']) {
+                    $decorator .= '<p>' . $node['description'] . '</p>';
+                }
+
+                return $decorator;
+            }
         );
         $htmlTree = $repo->childrenHierarchy(
-            null, /* starting from root nodes */
-            false, /* true: load all children, false: only direct */
+            null,
+            false,
             $options
         );
-
-//        $em = $this->get('doctrine.orm.default_entity_manager');
-//        /** @var Post $post */
-//        $post = $em->getRepository('ForumBundle:Post')->findOneBy(['title' => 'Your first blog post example!']);
-//        $post->setTitle('Hello world!');
-//        $em->persist($post);
-//        $em->flush();
 
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,

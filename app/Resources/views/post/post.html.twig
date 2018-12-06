@@ -5,11 +5,12 @@
 {% block body %}
     <div class="col-sm-12">
         <h1>{{ post.title }}</h1>
-        <div class="row post-item">
+        <div class="row comment-item">
             <div class="col-sm-12">
                 <p class="post-date">{{ post.created|date('d.m.Y') }}</p>
             </div>
             <div class="col-sm-3">
+                <img src="{{ asset('img/noavatar.jpg') }}" alt="noavatar">
                 <div>{{ post.author.username }}</div>
                 <div>{{ post.author.birthday|date('d.m.Y') }}</div>
             </div>
@@ -19,7 +20,7 @@
         </div>
 
         {% for comment in post.comments %}
-            <div class="row post-item">
+            <div class="row comment-item">
                 <div class="col-sm-12">
                     <p class="post-date">{{ comment.created|date('d.m.Y') }}</p>
                 </div>

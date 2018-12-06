@@ -36,4 +36,6 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/add-post, role: ROLE_USER }
+        - { path: ^/post, role: ROLE_USER }
+        - { path: ^/create-category, role: ROLE_ADMIN }
 

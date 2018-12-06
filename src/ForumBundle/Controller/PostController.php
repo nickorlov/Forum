@@ -3,9 +3,12 @@
 namespace ForumBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Entity\Repository\CategoryRepository;
+use ForumBundle\Entity\Category;
 use ForumBundle\Entity\Comment;
 use ForumBundle\Entity\Post;
-use ForumBundle\Form\CommentType;
+use ForumBundle\Form\CategoryFormType;
+use ForumBundle\Form\CommentFormType;
 use ForumBundle\Form\PostFormType;
 use ForumBundle\Repository\PostRepository;
 use ForumBundle\Repository\UserRepository;
@@ -24,11 +27,15 @@ class PostController extends Controller
     /** @var UserRepository */
     private $userRepository;
 
+    /** @var CategoryRepository */
+    private $categoryRepository;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->postRepository = $entityManager->getRepository('ForumBundle:Post');
         $this->userRepository = $entityManager->getRepository('ForumBundle:User');
+        $this->categoryRepository = $entityManager->getRepository('ForumBundle:Category');
     }
 
     /**
@@ -76,7 +83,7 @@ class PostController extends Controller
         $comment->setAuthor($this->getUser());
         $comment->setPost($post);
 
-        $form = $this->createForm(CommentType::class, $comment);
+        $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -92,6 +99,67 @@ class PostController extends Controller
 
         return $this->render('post/post.html.twig', [
             'post' => $post,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/category/{id}", name="category", requirements={"id"="\d+"})
+     */
+    public function categoryAction($id)
+    {
+        $category = $this->categoryRepository->find($id);
+        $posts = $this->postRepository->findBy(['category' => $id]);
+
+        $repo = $this->getDoctrine()->getRepository('ForumBundle:Category');
+        $options = array(
+            'decorate' => true,
+            'rootOpen' => '<ul>',
+            'rootClose' => '</ul>',
+            'childOpen' => '<li>',
+            'childClose' => '</li>',
+            'nodeDecorator' => function ($node) {
+                $decorator = '<a href="/category/' . $node['id'] . '">' . $node['title'] . '</a>';
+                if ($node['description']) {
+                    $decorator .= '<p>' . $node['description'] . '</p>';
+                }
+
+                return $decorator;
+            }
+        );
+        $htmlTree = $repo->childrenHierarchy(
+            $category,
+            false,
+            $options
+        );
+
+        return $this->render('post/category.html.twig', [
+            'category' => $category,
+            'tree' => $htmlTree,
+            'posts' => $posts
+        ]);
+    }
+
+    /**
+     * @Route("/create-category", name="create_category")
+     */
+    public function createCategoryAction(Request $request)
+    {
+        $category = new Category();
+
+        $form = $this->createForm(CategoryFormType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($category);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Congratulations! The category was created!');
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('post/add-category.html.twig', [
             'form' => $form->createView()
         ]);
     }
