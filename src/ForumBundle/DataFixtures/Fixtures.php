@@ -39,7 +39,8 @@ class Fixtures extends Fixture implements ContainerAwareInterface
             ->setEmail('joe@gmail.com')
             ->setPlainPassword('111111')
             ->setBirthday(new \DateTime('09-01-1995'))
-            ->setEnabled(true);
+            ->setEnabled(true)
+            ->setRoles(['ROLE_ADMIN']);
 
         $userManager->updateUser($user, false);
 
@@ -51,6 +52,7 @@ class Fixtures extends Fixture implements ContainerAwareInterface
 
         $cars = new Category();
         $cars->setTitle('Cars');
+        $cars->setDescription('Topics about cars');
         $bmw = new Category();
         $bmw->setTitle('BMW');
         $bmw->setParent($cars);
@@ -59,6 +61,7 @@ class Fixtures extends Fixture implements ContainerAwareInterface
         $audi->setParent($cars);
         $articles = new Category();
         $articles->setTitle('Articles');
+        $articles->setDescription('Just articles');
 
         $manager->persist($cars);
         $manager->persist($bmw);

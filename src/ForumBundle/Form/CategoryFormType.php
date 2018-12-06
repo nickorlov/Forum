@@ -27,7 +27,10 @@ class CategoryFormType extends AbstractType
             ->add(
                 'description',
                 TextareaType::class,
-                ['attr' => ['class' => 'form-control']]
+                [
+                    'attr' => ['class' => 'form-control'],
+                    'required' => false
+                ]
             )
             ->add(
                 'parent',
