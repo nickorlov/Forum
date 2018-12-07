@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{% block title %}ForumBundle:User:profile{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="blog-header">
+            <h2 class="blog-title">Profile</h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 blog-main">
+                {{ form_start(form) }}
+                <div class="col-md-12">
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.avatar) }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ form_row(form.birthday) }}
+                    </div>
+                    <div class="form-group col-md-4 pull-right">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

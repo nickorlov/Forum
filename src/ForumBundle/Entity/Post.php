@@ -54,7 +54,6 @@ class Post
     private $author;
 
     /**
-     * @ORM\Column(name="comments", type="array", nullable=true)
      * @ORM\OneToMany(targetEntity="ForumBundle\Entity\Comment", mappedBy="post")
      */
     private $comments;

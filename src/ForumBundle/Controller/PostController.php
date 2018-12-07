@@ -74,9 +74,27 @@ class PostController extends Controller
     }
 
     /**
-     * @Route("/post/{id}", name="post", requirements={"id"="\d+"})
+     * @Route("/post/{id}", name="showPost", requirements={"id"="\d+"}, methods={"GET"})
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function postAction($id, Request $request)
+    public function showPostAction($id)
+    {
+        $post = $this->postRepository->find($id);
+
+        return $this->render('post/post.html.twig', [
+            'post' => $post,
+            'form' => ($this->createForm(CommentFormType::class))->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/post/{id}", name="createComment", requirements={"id"="\d+"}, methods={"POST"})
+     * @param int $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function createCommentAction($id, Request $request)
     {
         $post = $this->postRepository->find($id);
         $comment = new Comment();
@@ -94,7 +112,7 @@ class PostController extends Controller
 
             $this->addFlash('success', 'Congratulations! Your comment was added!');
 
-            return $this->redirectToRoute('post', ['id' => $id]);
+            return $this->redirectToRoute('showPost', ['id' => $id]);
         }
 
         return $this->render('post/post.html.twig', [

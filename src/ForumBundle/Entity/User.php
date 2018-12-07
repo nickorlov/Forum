@@ -34,7 +34,7 @@ class User extends BaseUser
     /**
      * @ORM\Column(name="birthday", type="date", nullable=true)
      * @Assert\NotBlank()
-     * @Assert\Type("Birthday")
+     * @Assert\Type("object")
      */
     private $birthday;
 
@@ -42,6 +42,17 @@ class User extends BaseUser
      * @ORM\Column(name="facebook", type="string", length=255, nullable=true)
      */
     private $facebook;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ForumBundle\Entity\Comment", mappedBy="author")
+     */
+    private $comments;
+
+    /**
+     * @ORM\Column(name="avatar", type="string", nullable=true)
+     * @Assert\File(mimeTypes={ "application/jpg" })
+     */
+    private $avatar;
 
     /**
      * @return string
@@ -117,5 +128,37 @@ class User extends BaseUser
         $this->birthday = $birthday;
 
         return $this;
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param $avatar
+     * @return User
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     */
+    public function setComments($comments): void
+    {
+        $this->comments = $comments;
     }
 }

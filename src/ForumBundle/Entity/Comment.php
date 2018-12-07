@@ -26,7 +26,7 @@ class Comment
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="ForumBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */
     private $author;
