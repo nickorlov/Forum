@@ -50,7 +50,7 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(name="avatar", type="string", nullable=true)
-     * @Assert\File(mimeTypes={ "application/jpg" })
+     * @Assert\File(mimeTypes={ "image/jpeg" })
      */
     private $avatar;
 

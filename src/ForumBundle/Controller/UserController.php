@@ -37,22 +37,18 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $form->getData();
-            /** @var UploadedFile $avatar */
-            $avatar = $user->getAvatar();
+            if ($form->getData()->getAvatar()) {
+                /** @var UploadedFile $avatar */
+                $avatar = $user->getAvatar();
+                $fileName = $this->generateUniqueFileName() . '.' . $avatar->guessExtension();
+                $avatar->move(
+                    $this->getParameter('avatars_directory'),
+                    $fileName
+                );
+                $user->setAvatar($fileName);
+            }
 
-            $fileName = $this->generateUniqueFileName() . '.' . $avatar->guessExtension();
-
-            $avatar->move(
-                $this->getParameter('avatars_directory'),
-                $fileName
-            );
-
-            $user->setAvatar($fileName);
-
-            $this->entityManager->persist($user);
             $this->entityManager->flush();
-
             $this->addFlash('success', 'Congratulations! Your profile has updated!');
 
             return $this->redirect($this->generateUrl('profile'));

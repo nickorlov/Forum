@@ -22,7 +22,8 @@ class ProfileFormType extends AbstractType
                 FileType::class,
                 [
                     'attr' => ['class' => 'form-control'],
-                    'data_class' => null
+                    'data_class' => null,
+                    'required' => false
                 ]
             )
             ->add(

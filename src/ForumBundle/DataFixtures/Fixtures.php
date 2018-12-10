@@ -40,7 +40,8 @@ class Fixtures extends Fixture implements ContainerAwareInterface
             ->setPlainPassword('111111')
             ->setBirthday(new \DateTime('09-01-1995'))
             ->setEnabled(true)
-            ->setRoles(['ROLE_ADMIN']);
+            ->setRoles(['ROLE_ADMIN'])
+            ->setAvatar('noavatar.jpg');
 
         $userManager->updateUser($user, false);
 
