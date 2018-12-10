@@ -33,6 +33,7 @@ class UserController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
+        $oldAvatar = $user->getAvatar();
         $form = $this->createForm(ProfileFormType::class, $user);
         $form->handleRequest($request);
 
@@ -46,8 +47,11 @@ class UserController extends Controller
                     $fileName
                 );
                 $user->setAvatar($fileName);
+            } else {
+                $user->setAvatar($oldAvatar);
             }
 
+            $this->entityManager->persist($user);
             $this->entityManager->flush();
             $this->addFlash('success', 'Congratulations! Your profile has updated!');
 
@@ -55,7 +59,8 @@ class UserController extends Controller
         }
 
         return $this->render('profile/profile.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user' => $user
         ));
     }
 
