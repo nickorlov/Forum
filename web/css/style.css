@@ -2,3 +2,15 @@
     margin-bottom: 15px;
     border: 1px solid #000;
 }
+
+.blog-main {
+    margin-bottom: 15px;
+}
+
+.table a {
+    display: inline-block;
+}
+
+.flash-notice {
+    color: green;
+}

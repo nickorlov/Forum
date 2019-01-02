@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends Controller
@@ -61,6 +62,21 @@ class UserController extends Controller
         return $this->render('profile/profile.html.twig', array(
             'form' => $form->createView(),
             'user' => $user
+        ));
+    }
+
+    /**
+     * @Route("/profile/comments", name="profile_comments")
+     * @param Request $request
+     * @return Response
+     */
+    public function relatedCommentsAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        return $this->render('profile/comments.html.twig', array(
+            'user' => $user,
+            'comments' => $user->getComments(),
         ));
     }
 

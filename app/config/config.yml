@@ -87,7 +87,7 @@ swiftmailer:
     spool: { type: memory }
 
 sensio_framework_extra:
-   router:
+    router:
         annotations: false
 
 fos_user:
@@ -102,3 +102,5 @@ fos_user:
     registration:
         confirmation:
             enabled: true
+        form:
+            type: ForumBundle\Form\RegistrationFormType

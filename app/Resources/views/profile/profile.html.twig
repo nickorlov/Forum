@@ -24,11 +24,19 @@
                     <div class="form-group col-md-12">
                         {{ form_row(form.birthday) }}
                     </div>
+                    <div class="form-group col-md-12">
+                        {{ form_row(form.shortBio) }}
+                    </div>
                     <div class="form-group col-md-12 pull-right">
                         {{ form_widget(form.submit) }}
                     </div>
                 </div>
                 {{ form_end(form) }}
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="/profile/comments">My comments</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

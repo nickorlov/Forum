@@ -23,3 +23,7 @@ services:
         arguments: ["@knp_menu.factory"]
         tags:
         - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+    forum.form.registration:
+        class: ForumBundle\Form\RegistrationFormType
+        tags:
+            - { name: form.type, alias: forum_user_registration }

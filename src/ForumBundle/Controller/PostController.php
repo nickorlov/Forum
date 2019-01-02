@@ -40,6 +40,8 @@ class PostController extends Controller
 
     /**
      * @Route("/add-post", name="add_post")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createPostAction(Request $request)
     {
@@ -75,13 +77,11 @@ class PostController extends Controller
 
     /**
      * @Route("/post/{id}", name="showPost", requirements={"id"="\d+"}, methods={"GET"})
-     * @param int $id
+     * @param Post $post
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function showPostAction($id)
+    public function showPostAction(Post $post)
     {
-        $post = $this->postRepository->find($id);
-
         return $this->render('post/post.html.twig', [
             'post' => $post,
             'form' => ($this->createForm(CommentFormType::class))->createView()
@@ -90,13 +90,12 @@ class PostController extends Controller
 
     /**
      * @Route("/post/{id}", name="createComment", requirements={"id"="\d+"}, methods={"POST"})
-     * @param int $id
+     * @param Post $post
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function createCommentAction($id, Request $request)
+    public function createCommentAction(Post $post, Request $request)
     {
-        $post = $this->postRepository->find($id);
         $comment = new Comment();
         $comment->setAuthor($this->getUser());
         $comment->setPost($post);
@@ -112,7 +111,7 @@ class PostController extends Controller
 
             $this->addFlash('success', 'Congratulations! Your comment was added!');
 
-            return $this->redirectToRoute('showPost', ['id' => $id]);
+            return $this->redirectToRoute('showPost', ['id' => $post->getId()]);
         }
 
         return $this->render('post/post.html.twig', [
@@ -123,11 +122,12 @@ class PostController extends Controller
 
     /**
      * @Route("/category/{id}", name="category", requirements={"id"="\d+"})
+     * @param Category $category
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function categoryAction($id)
+    public function categoryAction(Category $category)
     {
-        $category = $this->categoryRepository->find($id);
-        $posts = $this->postRepository->findBy(['category' => $id]);
+        $posts = $this->postRepository->findBy(['category' => $category]);
 
         $repo = $this->getDoctrine()->getRepository('ForumBundle:Category');
         $options = array(
@@ -160,6 +160,8 @@ class PostController extends Controller
 
     /**
      * @Route("/create-category", name="create_category")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function createCategoryAction(Request $request)
     {
