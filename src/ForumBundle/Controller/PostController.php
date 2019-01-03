@@ -174,7 +174,7 @@ class PostController extends Controller
             $this->entityManager->persist($category);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Congratulations! The category was created!');
+            $this->addFlash('success', $this->get('translator')->trans('Congratulations! The category was created!'));
 
             return $this->redirectToRoute('homepage');
         }

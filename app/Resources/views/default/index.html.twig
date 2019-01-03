@@ -2,8 +2,8 @@
 
 {% block body %}
     <div class="jumbotron">
-        <h1 class="display-4">Welcome to Forum!</h1>
-        <p class="lead">In this forum you will find a lot of interesting topics to discuss.</p>
+        <h1 class="display-4">{% trans %}Welcome to Forum!{% endtrans %}</h1>
+        <p class="lead">{% trans %}In this forum you will find a lot of interesting topics to discuss.{% endtrans %}</p>
     </div>
     {{ tree | raw }}
 {% endblock %}

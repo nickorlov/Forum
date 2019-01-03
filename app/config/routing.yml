@@ -4,3 +4,9 @@ app:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+site_locale:
+    path: /{_locale}/
+    defaults: { _controller: ForumBundle:Home:index }
+    requirements:
+        _locale: en|ru
